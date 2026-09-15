@@ -8,7 +8,7 @@ spring:
   datasource:
     url: jdbc:sqlserver://localhost:1433;databaseName=ecommerce_db;encrypt=true;trustServerCertificate=true
     username: sa
-    password: YourPassword123@
+    password: ${DB_PASSWORD}
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
 
   jpa:
@@ -22,7 +22,7 @@ spring:
 
 # JWT Secret key tối thiểu 256-bit (dùng cho JJWT 0.12.x)
 jwt:
-  secret: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+  secret: ${JWT_SECRET}
   expiration: 86400000
 
 # Đường dẫn Swagger UI

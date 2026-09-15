@@ -10,6 +10,7 @@ import com.example.ecommercebackend.entity.OrderStatus;
 import com.example.ecommercebackend.entity.Product;
 import com.example.ecommercebackend.entity.User;
 import com.example.ecommercebackend.exception.ResourceNotFoundException;
+import org.springframework.security.access.AccessDeniedException;
 import com.example.ecommercebackend.repository.CartItemRepository;
 import com.example.ecommercebackend.repository.CartRepository;
 import com.example.ecommercebackend.repository.OrderRepository;
@@ -108,9 +109,14 @@ public class OrderService {
                 .toList();
     }
 
-    public OrderResponse getOrderById(Long id) {
+    public OrderResponse getOrderById(Long id, String username, boolean admin) {
         Order order = orderRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Khong tim thay don hang voi id: " + id));
+
+        if (!admin && !order.getUser().getUsername().equals(username)) {
+            throw new AccessDeniedException("Ban khong co quyen xem don hang nay");
+        }
+
         return mapToResponse(order);
     }
 

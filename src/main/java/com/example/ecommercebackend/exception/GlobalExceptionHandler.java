@@ -3,6 +3,7 @@ package com.example.ecommercebackend.exception;
 import com.example.ecommercebackend.dto.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -34,6 +35,12 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiResponse<Object>> handleResourceNotFoundException(ResourceNotFoundException ex) {
         ApiResponse<Object> response = ApiResponse.error(ex.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ApiResponse<Object>> handleAccessDeniedException(AccessDeniedException ex) {
+        ApiResponse<Object> response = ApiResponse.error("Ban khong co quyen thuc hien thao tac nay");
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
     }
 
     @ExceptionHandler(BadCredentialsException.class)

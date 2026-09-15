@@ -36,8 +36,10 @@ public class OrderController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<OrderResponse>> getOrderById(@PathVariable Long id) {
-        OrderResponse order = orderService.getOrderById(id);
+    public ResponseEntity<ApiResponse<OrderResponse>> getOrderById(@PathVariable Long id, Authentication authentication) {
+        OrderResponse order = orderService.getOrderById(id, authentication.getName(),
+                authentication.getAuthorities().stream()
+                        .anyMatch(authority -> "ROLE_ADMIN".equals(authority.getAuthority())));
         return ResponseEntity.ok(ApiResponse.success("Lay don hang thanh cong", order));
     }
 }
